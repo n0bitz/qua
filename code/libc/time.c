@@ -1,4 +1,7 @@
+#include <stddef.h>
 #include <time.h>
+
+int trap_RealTime(void*);
 
 clock_t clock(void) {
     clock_t t;
@@ -7,7 +10,5 @@ clock_t clock(void) {
 }
 
 time_t time(time_t* timer){
-    puts("time");
-    if(timer) *timer = 0;
-    return 0;
+    return trap_RealTime(NULL);
 }

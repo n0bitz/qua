@@ -63,8 +63,7 @@ int printf(const char* format, ...) {
 }
 
 int puts(const char *s) {
-    fprintf(stdout, "%s\n", s);
-    return 0;
+    return fprintf(stdout, "%s\n", s);
 }
 
 int setvbuf(FILE* stream, char* buffer, int mode, size_t size){puts("setvbuf");}

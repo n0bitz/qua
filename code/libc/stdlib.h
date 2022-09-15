@@ -5,6 +5,7 @@
 
 void abort(void);
 int abs(int);
+void* calloc(size_t, size_t);
 char* getenv(const char*);
 void* malloc(size_t);
 void* realloc(void*, size_t);

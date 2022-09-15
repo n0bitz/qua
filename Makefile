@@ -328,6 +328,7 @@ endef
 define DO_GAME_Q3LCC
 $(echo_cmd) "GAME_Q3LCC $<"
 $(Q)$(Q3LCC) $(BASEGAME_CFLAGS) -DQAGAME -o $@ $<
+$(Q)python $(TOOLSDIR)/process_asm.py $@
 endef
 
 define DO_UI_Q3LCC
@@ -469,7 +470,9 @@ Q3GOBJ_ = \
 	$(B)/$(BASEGAME)/lua/lstrlib.o \
 	$(B)/$(BASEGAME)/lua/ltablib.o \
 	$(B)/$(BASEGAME)/lua/lutf8lib.o \
-	$(B)/$(BASEGAME)/lua/linit.o
+	$(B)/$(BASEGAME)/lua/linit.o \
+	\
+	$(B)/$(BASEGAME)/game/game_wrap.o \
 
 Q3GVMOBJ = $(Q3GOBJ_:%.o=%.asm)
 
@@ -544,6 +547,12 @@ $(B)/$(BASEGAME)/cgame/%.asm: $(CGDIR)/%.c $(Q3LCC)
 	$(DO_CGAME_Q3LCC)
 
 $(B)/$(BASEGAME)/game/%.asm: $(GDIR)/%.c $(Q3LCC)
+	$(DO_GAME_Q3LCC)
+
+$(GDIR)/%_wrap.c: $(GDIR)/%.i
+	swig -lua -o $@ $<
+
+$(B)/$(BASEGAME)/game/%_wrap.asm: $(GDIR)/%_wrap.c $(Q3LCC)
 	$(DO_GAME_Q3LCC)
 
 $(B)/$(BASEGAME)/ui/bg_%.asm: $(GDIR)/bg_%.c $(Q3LCC)

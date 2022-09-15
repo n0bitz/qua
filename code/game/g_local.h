@@ -604,10 +604,10 @@ void SetLeader(int team, int client);
 void CheckTeamLeader( int team );
 void G_RunThink (gentity_t *ent);
 void AddTournamentQueue(gclient_t *client);
-void QDECL G_LogPrintf( const char *fmt, ... ) __attribute__ ((format (printf, 1, 2)));
+void G_LogPrintf( const char *fmt, ... );
 void SendScoreboardMessageToAllClients( void );
-void QDECL G_Printf( const char *fmt, ... ) __attribute__ ((format (printf, 1, 2)));
-void QDECL G_Error( const char *fmt, ... ) __attribute__ ((noreturn, format (printf, 1, 2)));
+void G_Printf( const char *fmt, ... );
+void G_Error( const char *fmt, ... );
 
 //
 // g_client.c
@@ -747,7 +747,7 @@ extern	vmCvar_t	g_proxMineTimeout;
 extern	vmCvar_t	g_localTeamPref;
 
 void	trap_Print( const char *text );
-void	trap_Error( const char *text ) __attribute__((noreturn));
+void	trap_Error( const char *text );
 int		trap_Milliseconds( void );
 int	trap_RealTime( qtime_t *qtime );
 int		trap_Argc( void );
@@ -950,4 +950,3 @@ void	trap_BotResetWeaponState(int weaponstate);
 int		trap_GeneticParentsAndChildSelection(int numranks, float *ranks, int *parent1, int *parent2, int *child);
 
 void	trap_SnapVector( float *v );
-

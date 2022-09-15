@@ -6,7 +6,13 @@ void abort(void) {
     trap_Error("abort");
 }
 
-char* getenv(const char* name){printf("getenv %s\n", name); return NULL;}
+void* calloc(size_t nmemb, size_t size) {
+    return malloc(nmemb * size);
+}
+
+char* getenv(const char* name){
+    return NULL;
+}
 
 char __malloc_buf[8*1024*1024];
 size_t __malloc_offset;

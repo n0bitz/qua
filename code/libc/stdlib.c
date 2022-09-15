@@ -1,7 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-char* getenv(const char* name){puts("getenv");}
+void trap_Error(const char*);
+void abort(void) {
+    trap_Error("abort");
+}
+
+char* getenv(const char* name){printf("getenv %s\n", name); return NULL;}
 
 char __malloc_buf[8*1024*1024];
 size_t __malloc_offset;

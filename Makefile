@@ -44,6 +44,7 @@ CGDIR=$(MOUNT_DIR)/cgame
 UIDIR=$(MOUNT_DIR)/ui
 Q3UIDIR=$(MOUNT_DIR)/q3_ui
 LIBCDIR=$(MOUNT_DIR)/libc
+LUADIR=$(MOUNT_DIR)/lua/src
 TOOLSDIR=$(MOUNT_DIR)/tools
 Q3ASMDIR=$(MOUNT_DIR)/tools/asm
 LBURGDIR=$(MOUNT_DIR)/tools/lcc/lburg
@@ -74,7 +75,7 @@ TARGETS = \
 	$(B)/$(BASEGAME)/vm/qagame.qvm \
 	$(B)/$(BASEGAME)/vm/ui.qvm
 
-BASEGAME_CFLAGS += -I$(LIBCDIR)
+BASEGAME_CFLAGS += -I../lua/src -I../libc
 
 ifeq ($(GENERATE_DEPENDENCIES),1)
   DEPEND_CFLAGS = -MMD
@@ -161,6 +162,7 @@ makedirs:
 	@$(MKDIR) $(B)/$(BASEGAME)/ui
 	@$(MKDIR) $(B)/$(BASEGAME)/qcommon
 	@$(MKDIR) $(B)/$(BASEGAME)/libc
+	@$(MKDIR) $(B)/$(BASEGAME)/lua
 	@$(MKDIR) $(B)/$(BASEGAME)/vm
 	@$(MKDIR) $(B)/tools/asm
 	@$(MKDIR) $(B)/tools/etc
@@ -333,6 +335,12 @@ $(echo_cmd) "UI_Q3LCC $<"
 $(Q)$(Q3LCC) $(BASEGAME_CFLAGS) -DUI -o $@ $<
 endef
 
+define DO_LUA_Q3LCC
+$(echo_cmd) "LUA_Q3LCC $<"
+$(Q)$(Q3LCC) -I../../libc -Dl_signalT=int -o $@ $<
+$(Q)python $(TOOLSDIR)/process_asm.py $@
+endef
+
 Q3ASMOBJ = \
   $(B)/tools/asm/q3asm.o \
   $(B)/tools/asm/cmdlib.o
@@ -429,8 +437,39 @@ Q3GOBJ_ = \
 	$(B)/$(BASEGAME)/libc/stdio.o \
 	$(B)/$(BASEGAME)/libc/stdlib.o \
 	$(B)/$(BASEGAME)/libc/string.o \
-	$(B)/$(BASEGAME)/libc/time.o
-
+	$(B)/$(BASEGAME)/libc/time.o \
+	\
+	$(B)/$(BASEGAME)/lua/lapi.o \
+	$(B)/$(BASEGAME)/lua/lcode.o \
+	$(B)/$(BASEGAME)/lua/lctype.o \
+	$(B)/$(BASEGAME)/lua/ldebug.o \
+	$(B)/$(BASEGAME)/lua/ldo.o \
+	$(B)/$(BASEGAME)/lua/ldump.o \
+	$(B)/$(BASEGAME)/lua/lfunc.o \
+	$(B)/$(BASEGAME)/lua/lgc.o \
+	$(B)/$(BASEGAME)/lua/llex.o \
+	$(B)/$(BASEGAME)/lua/lmem.o \
+	$(B)/$(BASEGAME)/lua/lobject.o \
+	$(B)/$(BASEGAME)/lua/lopcodes.o \
+	$(B)/$(BASEGAME)/lua/lparser.o \
+	$(B)/$(BASEGAME)/lua/lstate.o \
+	$(B)/$(BASEGAME)/lua/lstring.o \
+	$(B)/$(BASEGAME)/lua/ltable.o \
+	$(B)/$(BASEGAME)/lua/ltm.o \
+	$(B)/$(BASEGAME)/lua/lundump.o \
+	$(B)/$(BASEGAME)/lua/lvm.o \
+	$(B)/$(BASEGAME)/lua/lzio.o \
+	$(B)/$(BASEGAME)/lua/lauxlib.o \
+	$(B)/$(BASEGAME)/lua/lbaselib.o \
+	$(B)/$(BASEGAME)/lua/lcorolib.o \
+	$(B)/$(BASEGAME)/lua/ldblib.o \
+	$(B)/$(BASEGAME)/lua/liolib.o \
+	$(B)/$(BASEGAME)/lua/lmathlib.o \
+	$(B)/$(BASEGAME)/lua/loadlib.o \
+	$(B)/$(BASEGAME)/lua/lstrlib.o \
+	$(B)/$(BASEGAME)/lua/ltablib.o \
+	$(B)/$(BASEGAME)/lua/lutf8lib.o \
+	$(B)/$(BASEGAME)/lua/linit.o
 
 Q3GVMOBJ = $(Q3GOBJ_:%.o=%.asm)
 
@@ -518,6 +557,9 @@ $(B)/$(BASEGAME)/qcommon/%.asm: $(CMDIR)/%.c $(Q3LCC)
 
 $(B)/$(BASEGAME)/libc/%.asm: $(LIBCDIR)/%.c $(Q3LCC)
 	$(DO_Q3LCC)
+
+$(B)/$(BASEGAME)/lua/%.asm: $(LUADIR)/%.c $(Q3LCC)
+	$(DO_LUA_Q3LCC)
 
 #############################################################################
 # MISC

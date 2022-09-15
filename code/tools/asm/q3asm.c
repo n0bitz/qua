@@ -918,6 +918,18 @@ STAT("ADDRL");
 	return 0;
 }
 
+ASM(ADDP)
+{
+	int		v;
+	if ( !strncmp( token, "ADDP", 4 ) ) {
+STAT("ADDP");
+		instructionCount++;
+		EmitByte( &segment[CODESEG], OP_ADD );
+		return 1;
+	}
+	return 0;
+}
+
 ASM(PROC)
 {
 	char	name[1024];
@@ -1262,6 +1274,7 @@ Empirical frequency statistics from FI 2001.01.23:
 #undef ASM
 #define ASM(O) if (TryAssemble##O ()) return;
 
+	ASM(ADDP)
 	ASM(ADDRL)
 	ASM(BYTE)
 	ASM(LINE)
@@ -1644,4 +1657,3 @@ Motivation: not wanting to scrollback for pages to find asm error.
 
 	return errorCount;
 }
-

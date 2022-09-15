@@ -388,7 +388,7 @@ Q3CGVMOBJ = $(Q3CGOBJ_:%.o=%.asm)
 
 $(B)/$(BASEGAME)/vm/cgame.qvm: $(Q3CGVMOBJ) $(CGDIR)/cg_syscalls.asm $(Q3ASM)
 	$(echo_cmd) "Q3ASM $@"
-	$(Q)$(Q3ASM) -o $@ $(Q3CGVMOBJ) $(CGDIR)/cg_syscalls.asm
+	$(Q)$(Q3ASM) -vq3 -o $@ $(Q3CGVMOBJ) $(CGDIR)/cg_syscalls.asm
 
 #############################################################################
 ## BASEQ3 GAME
@@ -475,7 +475,7 @@ Q3GVMOBJ = $(Q3GOBJ_:%.o=%.asm)
 
 $(B)/$(BASEGAME)/vm/qagame.qvm: $(Q3GVMOBJ) $(GDIR)/g_syscalls.asm $(Q3ASM)
 	$(echo_cmd) "Q3ASM $@"
-	$(Q)$(Q3ASM) -o $@ $(Q3GVMOBJ) $(GDIR)/g_syscalls.asm
+	$(Q)$(Q3ASM) -vq3 -o $@ $(Q3GVMOBJ) $(GDIR)/g_syscalls.asm
 
 #############################################################################
 ## BASEQ3 UI
@@ -531,7 +531,7 @@ Q3UIVMOBJ = $(Q3UIOBJ_:%.o=%.asm)
 
 $(B)/$(BASEGAME)/vm/ui.qvm: $(Q3UIVMOBJ) $(UIDIR)/ui_syscalls.asm $(Q3ASM)
 	$(echo_cmd) "Q3ASM $@"
-	$(Q)$(Q3ASM) -o $@ $(Q3UIVMOBJ) $(UIDIR)/ui_syscalls.asm
+	$(Q)$(Q3ASM) -vq3 -o $@ $(Q3UIVMOBJ) $(UIDIR)/ui_syscalls.asm
 
 #############################################################################
 ## GAME MODULE RULES

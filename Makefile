@@ -43,6 +43,7 @@ GDIR=$(MOUNT_DIR)/game
 CGDIR=$(MOUNT_DIR)/cgame
 UIDIR=$(MOUNT_DIR)/ui
 Q3UIDIR=$(MOUNT_DIR)/q3_ui
+LIBCDIR=$(MOUNT_DIR)/libc
 TOOLSDIR=$(MOUNT_DIR)/tools
 Q3ASMDIR=$(MOUNT_DIR)/tools/asm
 LBURGDIR=$(MOUNT_DIR)/tools/lcc/lburg
@@ -72,6 +73,8 @@ TARGETS = \
 	$(B)/$(BASEGAME)/vm/cgame.qvm \
 	$(B)/$(BASEGAME)/vm/qagame.qvm \
 	$(B)/$(BASEGAME)/vm/ui.qvm
+
+BASEGAME_CFLAGS += -I$(LIBCDIR)
 
 ifeq ($(GENERATE_DEPENDENCIES),1)
   DEPEND_CFLAGS = -MMD
@@ -157,6 +160,7 @@ makedirs:
 	@$(MKDIR) $(B)/$(BASEGAME)/game
 	@$(MKDIR) $(B)/$(BASEGAME)/ui
 	@$(MKDIR) $(B)/$(BASEGAME)/qcommon
+	@$(MKDIR) $(B)/$(BASEGAME)/libc
 	@$(MKDIR) $(B)/$(BASEGAME)/vm
 	@$(MKDIR) $(B)/tools/asm
 	@$(MKDIR) $(B)/tools/etc
@@ -416,7 +420,17 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_weapon.o \
   \
   $(B)/$(BASEGAME)/qcommon/q_math.o \
-  $(B)/$(BASEGAME)/qcommon/q_shared.o
+  $(B)/$(BASEGAME)/qcommon/q_shared.o \
+	\
+	$(B)/$(BASEGAME)/libc/errno.o \
+	$(B)/$(BASEGAME)/libc/locale.o \
+	$(B)/$(BASEGAME)/libc/math.o \
+	$(B)/$(BASEGAME)/libc/setjmp.o \
+	$(B)/$(BASEGAME)/libc/stdio.o \
+	$(B)/$(BASEGAME)/libc/stdlib.o \
+	$(B)/$(BASEGAME)/libc/string.o \
+	$(B)/$(BASEGAME)/libc/time.o
+
 
 Q3GVMOBJ = $(Q3GOBJ_:%.o=%.asm)
 
@@ -500,6 +514,9 @@ $(B)/$(BASEGAME)/ui/%.asm: $(Q3UIDIR)/%.c $(Q3LCC)
 	$(DO_UI_Q3LCC)
 
 $(B)/$(BASEGAME)/qcommon/%.asm: $(CMDIR)/%.c $(Q3LCC)
+	$(DO_Q3LCC)
+
+$(B)/$(BASEGAME)/libc/%.asm: $(LIBCDIR)/%.c $(Q3LCC)
 	$(DO_Q3LCC)
 
 #############################################################################

@@ -183,6 +183,7 @@ options_t options = { 0 };
 
 symbol_t	*symbols;
 symbol_t	*lastSymbol = 0;  /* Most recent symbol defined. */
+int			hacksSinceLastSymbolDefined;
 
 
 #define	MAX_ASM_FILES	256
@@ -544,6 +545,8 @@ static void DefineSymbol( char *sym, int value ) {
 		return;
 	}
 
+	hacksSinceLastSymbolDefined = 0;
+
 	// add the file prefix to local symbols to guarantee unique
 	if ( sym[0] == '$' ) {
 		sprintf( expanded, "%s_%i", sym, currentFileIndex );
@@ -807,6 +810,9 @@ static void HackToSegment( segmentName_t seg ) {
 	if ( passNumber == 0 ) {
 		lastSymbol->segment = currentSegment;
 		lastSymbol->value = currentSegment->imageUsed;
+		if(hacksSinceLastSymbolDefined++ > 1) {
+			CodeError("HackToSegment called more than once for %s\n", lastSymbol->name);
+		}
 	}
 }
 

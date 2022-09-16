@@ -60,7 +60,7 @@ typedef union Value {
 ** an actual value plus a tag with its type.
 */
 
-#define TValuefields	Value value_; lu_byte tt_
+#define TValuefields	Value value_; l_uint32 tt_
 
 typedef struct TValue {
   TValuefields;
@@ -686,7 +686,7 @@ typedef union Closure {
 typedef union Node {
   struct NodeKey {
     TValuefields;  /* fields for value */
-    lu_byte key_tt;  /* key type */
+    l_uint32 key_tt;  /* key type */
     int next;  /* for chaining */
     Value key_val;  /* key value */
   } u;
@@ -797,4 +797,3 @@ LUAI_FUNC void luaO_chunkid (char *out, const char *source, size_t srclen);
 
 
 #endif
-

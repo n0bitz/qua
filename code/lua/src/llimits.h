@@ -33,9 +33,8 @@ typedef long l_mem;
 
 
 /* chars used as small naturals (so that 'char' is reserved for characters) */
-// TODO make these chars again after fixing qvm data initialization
-typedef unsigned lu_byte;
-typedef signed ls_byte;
+typedef unsigned char lu_byte;
+typedef signed char ls_byte;
 
 
 /* maximum value for size_t */

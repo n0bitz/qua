@@ -1715,6 +1715,18 @@ void Cmd_Lua_f( gentity_t *ent ) {
 
 /*
 =================
+Cmd_LuaFile_f
+=================
+*/
+void Cmd_LuaFile_f( gentity_t *ent ) {
+	lua_State *L = g_luaState;
+	if ( luaL_dofile( L, ConcatArgs(1) ) != LUA_OK ) {
+		Com_Printf( "^1%s\n", lua_tostring( L, -1 ) ) ;
+	}
+}
+
+/*
+=================
 ClientCommand
 =================
 */
@@ -1831,6 +1843,8 @@ void ClientCommand( int clientNum ) {
 		Cmd_Stats_f( ent );
 	else if (Q_stricmp (cmd, "lua") == 0)
 		Cmd_Lua_f( ent );
+	else if (Q_stricmp (cmd, "luafile") == 0)
+		Cmd_LuaFile_f( ent );
 	else
 		trap_SendServerCommand( clientNum, va("print \"unknown cmd %s\n\"", cmd ) );
 }

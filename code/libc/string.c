@@ -29,7 +29,10 @@ int memcmp(const void* ptr1, const void* ptr2, size_t num) {
 }
 
 int strncmp(const char* str1, const char* str2, size_t num){puts("strncmp");}
-char* strerror(int errnum){puts("strerror");}
+
+char* strerror(int errnum){
+    return "Unknown error";
+}
 
 char* strpbrk(const char* str1, const char* str2) {
     while(*str1) {

@@ -15,7 +15,9 @@
 #define BUFSIZ 1
 
 typedef struct {
-    int todo;
+    int handle;
+    int eof;
+    int error;
 } FILE;
 
 extern FILE* stdin;

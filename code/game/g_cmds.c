@@ -26,10 +26,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "../../ui/menudef.h"			// for the voice chats
 #endif
 
-#include <lua.h>
-#include <lualib.h>
-#include <lauxlib.h>
-
 /*
 ==================
 DeathmatchScoreboardMessage
@@ -1705,21 +1701,16 @@ void Cmd_Stats_f( gentity_t *ent ) {
 */
 }
 
-extern int luaopen_game(lua_State*);
-
 /*
 =================
 Cmd_Lua_f
 =================
 */
 void Cmd_Lua_f( gentity_t *ent ) {
-	lua_State *L = luaL_newstate();
-	luaL_openlibs( L );
-	luaopen_game( L );
+	lua_State *L = g_luaState;
 	if ( luaL_dostring( L, ConcatArgs(1) ) != LUA_OK ) {
 		Com_Printf( "^1%s\n", lua_tostring( L, -1 ) ) ;
 	}
-	lua_close( L );
 }
 
 /*

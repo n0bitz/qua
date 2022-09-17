@@ -22,6 +22,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 // g_local.h -- local definitions for game module
 
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+
 #include "../qcommon/q_shared.h"
 #include "bg_public.h"
 #include "g_public.h"
@@ -745,6 +749,10 @@ extern	vmCvar_t	g_enableBreath;
 extern	vmCvar_t	g_singlePlayer;
 extern	vmCvar_t	g_proxMineTimeout;
 extern	vmCvar_t	g_localTeamPref;
+
+
+int luaopen_game(lua_State*);
+extern lua_State *g_luaState;
 
 void	trap_Print( const char *text );
 void	trap_Error( const char *text );

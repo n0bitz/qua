@@ -37,6 +37,7 @@ typedef struct {
 
 gentity_t		g_entities[MAX_GENTITIES];
 gclient_t		g_clients[MAX_CLIENTS];
+lua_State		*g_luaState;
 
 vmCvar_t	g_gametype;
 vmCvar_t	g_dmflags;
@@ -481,6 +482,12 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	ClearRegisteredItems();
 
+	if ( !(g_luaState = luaL_newstate()) ) {
+		G_Error( "Failed to create lua state" );
+	}
+	luaL_openlibs( g_luaState );
+	luaopen_game( g_luaState );
+
 	// parse the key/value pairs and spawn gentities
 	G_SpawnEntitiesFromString();
 
@@ -534,6 +541,8 @@ void G_ShutdownGame( int restart ) {
 	if ( trap_Cvar_VariableIntegerValue( "bot_enable" ) ) {
 		BotAIShutdown( restart );
 	}
+
+	lua_close( g_luaState );
 }
 
 

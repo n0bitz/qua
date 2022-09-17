@@ -178,6 +178,8 @@ struct gentity_s {
 	float		random;
 
 	gitem_t		*item;			// for bonus items
+
+	char		*script;
 };
 
 
@@ -752,6 +754,7 @@ extern	vmCvar_t	g_localTeamPref;
 
 
 int luaopen_game(lua_State*);
+void PushEntityOntoLuaStack(gentity_t *ent);
 extern lua_State *g_luaState;
 
 void	trap_Print( const char *text );

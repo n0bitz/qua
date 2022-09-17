@@ -1711,6 +1711,7 @@ void Cmd_Lua_f( gentity_t *ent ) {
 	if ( luaL_dostring( L, ConcatArgs(1) ) != LUA_OK ) {
 		Com_Printf( "^1%s\n", lua_tostring( L, -1 ) ) ;
 	}
+	lua_settop( L, 0 );
 }
 
 /*
@@ -1723,6 +1724,7 @@ void Cmd_LuaFile_f( gentity_t *ent ) {
 	if ( luaL_dofile( L, ConcatArgs(1) ) != LUA_OK ) {
 		Com_Printf( "^1%s\n", lua_tostring( L, -1 ) ) ;
 	}
+	lua_settop( L, 0 );
 }
 
 /*

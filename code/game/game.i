@@ -1,7 +1,13 @@
 %module game
 %{
 #include "g_local.h"
+
+void PushEntityOntoLuaStack(gentity_t *ent) {
+    SWIG_NewPointerObj(g_luaState, ent, SWIGTYPE_p_gentity_s, 0);
+}
 %}
+
+%ignore PushEntityOntoLuaStack;
 
 %ignore Hunk_AllocDebug;
 %ignore Q_acos;

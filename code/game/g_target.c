@@ -465,3 +465,49 @@ void SP_target_location( gentity_t *self ){
 	G_SetOrigin( self, self->s.origin );
 }
 
+//==========================================================
+
+/*QUAKED target_script (0 0.5 0) (-8 -8 -8) (8 8 8)
+"script" lua code to run
+
+Runs a lua script when triggered.
+*/
+void Use_Target_Script( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
+	lua_State *L = g_luaState;
+
+	if ( luaL_loadstring( L, ent->script ) != LUA_OK ) {
+		Com_Printf( "^1%s\n", lua_tostring( L, -1 ) ) ;
+		lua_settop( L, 0 );
+		return;
+	}
+
+	// create a new environment to make ent, other, and activator available to
+	// the script without modifying the global environment
+	lua_newtable( L );
+	lua_pushvalue( L, -1 );
+	lua_setmetatable( L, -2 );
+	lua_getglobal( L, "_G" );
+	lua_setfield( L, -2, "__index" );
+
+	PushEntityOntoLuaStack( ent );
+	lua_setfield( L, -2, "ent" );
+	PushEntityOntoLuaStack( other );
+	lua_setfield( L, -2, "other" );
+	PushEntityOntoLuaStack( activator );
+	lua_setfield( L, -2, "activator" );
+
+	lua_setupvalue( L, -2, 1 );
+
+	if ( lua_pcall( L, 0, 0, 0 ) != LUA_OK ) {
+		Com_Printf( "^1%s\n", lua_tostring( L, -1 ) ) ;
+	}
+
+	lua_settop( L, 0 );
+}
+
+void SP_target_script( gentity_t *ent ){
+	char *s;
+	G_SpawnString("script", "", &s);
+	ent->script = G_NewString(s);
+	ent->use = Use_Target_Script;
+}

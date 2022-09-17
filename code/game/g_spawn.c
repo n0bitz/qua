@@ -152,6 +152,7 @@ void SP_target_kill (gentity_t *ent);
 void SP_target_position (gentity_t *ent);
 void SP_target_location (gentity_t *ent);
 void SP_target_push (gentity_t *ent);
+void SP_target_script (gentity_t *ent);
 
 void SP_light (gentity_t *self);
 void SP_info_null (gentity_t *self);
@@ -228,6 +229,7 @@ spawn_t	spawns[] = {
 	{"target_position", SP_target_position},
 	{"target_location", SP_target_location},
 	{"target_push", SP_target_push},
+	{"target_script", SP_target_script},
 
 	{"light", SP_light},
 	{"path_corner", SP_path_corner},
@@ -640,4 +642,3 @@ void G_SpawnEntitiesFromString( void ) {
 
 	level.spawning = qfalse;			// any future calls to G_Spawn*() will be errors
 }
-

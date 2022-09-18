@@ -33,6 +33,8 @@ void PushEntityOntoLuaStack(gentity_t *ent) {
 %ignore g_proxMineTimeout;
 %ignore trap_Args;
 
+%include "array_wrapper.i"
+
 #define Q3_VM
 %include "../qcommon/q_platform.h"
 %include "../qcommon/q_shared.h"

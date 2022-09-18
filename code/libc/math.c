@@ -5,7 +5,9 @@ double acos(double x){puts("acos");}
 double asin(double x){puts("asin");}
 double exp(double x){puts("exp");}
 
-double fmod(double numer, double denom){puts("fmod");}
+double fmod(double numer, double denom){
+    return numer - floor(numer / denom) * denom;
+}
 
 // adapted from musl
 double frexp(double x, int* exp) {

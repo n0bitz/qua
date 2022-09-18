@@ -48,5 +48,22 @@ char* strpbrk(const char* str1, const char* str2) {
     return NULL;
 } 
 
-size_t strspn(const char* str1, const char* str2){puts("strspn");}
+size_t strspn(const char* str1, const char* str2) {
+    size_t len;
+    const char* c;
+
+    for(len = 0; *str1; str1++, len++) {
+        for(c = str2; *c; c++) {
+            if(*c == *str1) {
+                break;
+            }
+        }
+        if(!*c) {
+            break;
+        }
+    }
+
+    return len;
+}
+
 int strcoll(const char* str1, const char* str2){puts("strcoll");}
